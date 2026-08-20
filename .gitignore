@@ -1,0 +1,6 @@
+.wolfox-build/
+WolFox.dylib
+*.deb
+*.log
+SHA256SUMS.txt
+linux_tests/*_sim_test
