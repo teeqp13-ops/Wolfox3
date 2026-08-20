@@ -29,6 +29,7 @@ jobs:
         uses: beerpiss/theos-action@v1
         with:
           theos-sdks: https://github.com/theos/sdks
+          cache: false
 
       - name: Build rootless package
         working-directory: tweak
