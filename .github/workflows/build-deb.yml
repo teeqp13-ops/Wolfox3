@@ -1,0 +1,51 @@
+name: Build DLTube deb
+
+on:
+  push:
+    branches: [main, "codex/**"]
+    paths:
+      - "tweak/**"
+      - ".github/workflows/build-deb.yml"
+  pull_request:
+    paths:
+      - "tweak/**"
+      - ".github/workflows/build-deb.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rootless-deb:
+    name: Rootless iOS package
+    runs-on: macos-14
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Theos
+        uses: beerpiss/theos-action@v1
+        with:
+          theos-sdks: https://github.com/theos/sdks
+
+      - name: Build rootless package
+        working-directory: tweak
+        run: make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+
+      - name: Verify package
+        working-directory: tweak
+        run: |
+          package="$(find packages -maxdepth 1 -type f -name '*.deb' -print -quit)"
+          test -n "$package"
+          dpkg-deb --info "$package"
+          dpkg-deb --contents "$package"
+
+      - name: Upload deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: DLTube-rootless-deb
+          path: tweak/packages/*.deb
+          if-no-files-found: error
+          retention-days: 30
