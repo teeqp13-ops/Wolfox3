@@ -1,8 +1,8 @@
-# WolFox Store + DLTube
+# WolFox Store + WolfTube
 
 متجر رقمي عربي سريع يعمل كتطبيق Telegram Web App ويمكن فتحه من الويب، مع SQLite ودعم EdfaPay وتسليم أكواد التفعيل عبر Telegram أو NeraChat WhatsApp.
 
-يتضمن المستودع أيضًا أساس أداة **DLTube** لأجهزة iOS Jailbreak. يبني GitHub Actions حزمة Rootless بصيغة `.deb` من مجلد [`tweak`](tweak/README.md).
+يتضمن المستودع أيضًا أساس أداة **WolfTube** لأجهزة iOS Jailbreak. يبني GitHub Actions حزمة Rootless بصيغة `.deb` من مجلد [`tweak`](tweak/README.md).
 
 ## المزايا الحالية
 
@@ -15,7 +15,7 @@
 - سجل محاولات تسليم Telegram وWhatsApp.
 - لوحة إدارة للطلبات محمية بكلمة مرور مشفرة.
 - اختبارات آلية على PHP 8.1 و8.2 و8.3 عبر GitHub Actions.
-- بناء آلي لحزمة DLTube Rootless باستخدام Theos، مع رفع ملف `.deb` كـ GitHub Artifact.
+- بناء آلي لحزمة WolfTube Rootless باستخدام Theos، مع رفع ملف `.deb` كـ GitHub Artifact.
 
 ## تشغيل محلي
 

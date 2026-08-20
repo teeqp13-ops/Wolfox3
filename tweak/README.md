@@ -1,4 +1,4 @@
-# DLTube deb
+# WolfTube deb
 
 حزمة Rootless تجريبية لأجهزة iOS 14 أو أحدث مع Jailbreak. تدخل الأداة إلى تطبيق YouTube الرسمي ذي المعرّف `com.google.ios.youtube` وتضيف زر إعدادات عائمًا.
 
@@ -23,7 +23,7 @@
 make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
 ```
 
-تظهر الحزمة في `packages/`. ينفذ GitHub Actions الأمر نفسه ويرفع الناتج باسم `DLTube-rootless-deb`.
+تظهر الحزمة في `packages/`. ينفذ GitHub Actions الأمر نفسه ويرفع الناتج باسم `WolfTube-rootless-deb`.
 
 ## التثبيت
 

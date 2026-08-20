@@ -2,8 +2,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 
-static NSString *const DLTPrefsPath = @"/var/mobile/Library/Preferences/com.wolfox.dltube.plist";
-static NSString *const DLTSettingsButtonID = @"com.wolfox.dltube.settings-button";
+static NSString *const DLTPrefsPath = @"/var/mobile/Library/Preferences/com.wolfox.wolftube.plist";
+static NSString *const DLTSettingsButtonID = @"com.wolfox.wolftube.settings-button";
 static NSHashTable<AVPlayer *> *DLTPlayers;
 
 static NSDictionary *DLTPreferences(void) {
@@ -105,7 +105,7 @@ static UIViewController *DLTTopViewController(void) {
         return;
     }
 
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"DLTube"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"WolfTube"
                                                                    message:@"إعدادات النسخة التجريبية 0.1.0"
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     [self addToggle:@"التشغيل في الخلفية" key:@"backgroundPlayback" fallback:YES toAlert:alert];
@@ -147,7 +147,7 @@ static void DLTInstallSettingsButton(UIWindow *window) {
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     button.accessibilityIdentifier = DLTSettingsButtonID;
-    button.accessibilityLabel = @"إعدادات DLTube";
+    button.accessibilityLabel = @"إعدادات WolfTube";
     button.frame = CGRectMake(16.0, MAX(80.0, CGRectGetHeight(window.bounds) - 150.0), 52.0, 52.0);
     button.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;
     button.backgroundColor = [UIColor colorWithRed:0.47 green:0.25 blue:0.95 alpha:0.96];

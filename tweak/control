@@ -1,8 +1,8 @@
-Package: com.wolfox.dltube
-Name: DLTube
+Package: com.wolfox.wolftube
+Name: WolfTube
 Version: 0.1.0
 Architecture: iphoneos-arm64
-Description: Arabic YouTube enhancements foundation with in-app settings for jailbroken iOS devices.
+Description: WolfTube Arabic YouTube enhancements with in-app settings for jailbroken iOS devices.
 Maintainer: WolFox <support@p3nd.fun>
 Author: WolFox
 Section: Tweaks

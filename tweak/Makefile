@@ -4,9 +4,9 @@ INSTALL_TARGET_PROCESSES := YouTube
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME := DLTube
-DLTube_FILES := Tweak.xm
-DLTube_CFLAGS := -fobjc-arc
-DLTube_FRAMEWORKS := Foundation UIKit AVFoundation AVKit
+TWEAK_NAME := WolfTube
+WolfTube_FILES := Tweak.xm
+WolfTube_CFLAGS := -fobjc-arc
+WolfTube_FRAMEWORKS := Foundation UIKit AVFoundation AVKit
 
 include $(THEOS_MAKE_PATH)/tweak.mk
