@@ -30,7 +30,10 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Check repository for committed secrets
+        run: ./scripts/check_repository_secrets.sh
 
       - name: Install Linux dependencies
         run: |
@@ -88,7 +91,7 @@ jobs:
             > SHA256SUMS.txt
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: WolFox-v1.6.1-iOS15.8-26.5-arm64-${{ github.sha }}
           if-no-files-found: error
