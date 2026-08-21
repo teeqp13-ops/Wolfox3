@@ -1,0 +1,21 @@
+.wolfox-build/
+.theos/
+.theos-sdks/
+WolFox.dylib
+*.deb
+*.log
+SHA256SUMS.txt
+linux_tests/*_sim_test
+
+# Local configuration and credentials must never be committed.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.mobileprovision
+secrets/
+private/
+WFLicenseConfig.local.h

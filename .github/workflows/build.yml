@@ -1,0 +1,103 @@
+name: Build WolFox SafeBuildFix
+
+on:
+  push:
+    branches:
+      - main
+      - "codex/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wolfox-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    name: Linux tests and iOS arm64 packages
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      THEOS: ${{ github.workspace }}/.theos
+      THEOS_SDKS: ${{ github.workspace }}/.theos-sdks
+      SDKROOT: ${{ github.workspace }}/.theos-sdks/iPhoneOS16.5.sdk
+      WOLFOX_TARGET_BUNDLE_IDS: com.example.wolfox.authorizedtest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Check repository for committed secrets
+        run: ./scripts/check_repository_secrets.sh
+
+      - name: Install Linux dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential clang curl dpkg-dev fakeroot git libtinfo6 \
+            libxml2 lld perl ripgrep rsync xz-utils zip
+
+      - name: Run Linux tests
+        run: |
+          set -euo pipefail
+          chmod +x ./*.sh
+          ./run_all_linux_tests.sh
+
+      - name: Install official Theos toolchain and SDK
+        run: |
+          set -euo pipefail
+          git clone --recursive --depth 1 https://github.com/theos/theos.git "$THEOS"
+          mkdir -p "$THEOS/toolchain"
+          curl -fsSL \
+            https://github.com/L1ghtmann/llvm-project/releases/latest/download/iOSToolchain-x86_64.tar.xz \
+            | tar -xJ -C "$THEOS/toolchain"
+          git clone --depth 1 https://github.com/theos/sdks.git "$THEOS_SDKS"
+          test -x "$THEOS/toolchain/linux/iphone/bin/ldid"
+          test -f "$SDKROOT/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h"
+          test -f "$SDKROOT/System/Library/Frameworks/WebKit.framework/Headers/WebKit.h"
+          test -f "$SDKROOT/usr/lib/libSystem.tbd"
+
+      - name: Build signed Rootful and Rootless packages
+        run: |
+          set -euo pipefail
+          make clean
+          CC=/usr/bin/clang \
+          CXX=/usr/bin/clang++ \
+          LDID="$THEOS/toolchain/linux/iphone/bin/ldid" \
+          make package FINALPACKAGE=1
+
+      - name: Verify artifacts
+        run: |
+          set -euo pipefail
+          test -s WolFox.dylib
+          test -s WolFox_v1.6.1_iOS15.8-26.5_Rootful.deb
+          test -s WolFox_v1.6.1_iOS15.8-26.5_Rootless.deb
+          test "$(dpkg-deb -f WolFox_v1.6.1_iOS15.8-26.5_Rootful.deb Architecture)" = "iphoneos-arm"
+          test "$(dpkg-deb -f WolFox_v1.6.1_iOS15.8-26.5_Rootless.deb Architecture)" = "iphoneos-arm64"
+          dpkg-deb -c WolFox_v1.6.1_iOS15.8-26.5_Rootful.deb \
+            | grep -F './Library/MobileSubstrate/DynamicLibraries/WolFox.dylib'
+          dpkg-deb -c WolFox_v1.6.1_iOS15.8-26.5_Rootless.deb \
+            | grep -F './var/jb/Library/MobileSubstrate/DynamicLibraries/WolFox.dylib'
+          sha256sum \
+            WolFox.dylib \
+            WolFox_v1.6.1_iOS15.8-26.5_Rootful.deb \
+            WolFox_v1.6.1_iOS15.8-26.5_Rootless.deb \
+            > SHA256SUMS.txt
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: WolFox-v1.6.1-iOS15.8-26.5-arm64-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            WolFox.dylib
+            WolFox_v1.6.1_iOS15.8-26.5_Rootful.deb
+            WolFox_v1.6.1_iOS15.8-26.5_Rootless.deb
+            SHA256SUMS.txt
