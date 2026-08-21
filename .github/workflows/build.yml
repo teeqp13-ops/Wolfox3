@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Linux dependencies
         run: |
@@ -37,7 +37,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential clang curl dpkg-dev fakeroot git libtinfo6 \
-            libxml2 lld perl rsync xz-utils zip
+            libxml2 lld perl ripgrep rsync xz-utils zip
 
       - name: Run Linux tests
         run: |
