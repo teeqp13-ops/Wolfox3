@@ -197,7 +197,7 @@ static BOOL WFMasterProcessIsEligible(void) {
     NSArray *tabLabels = @[@"الموقع GPS", @"معرف الجهاز", @"البلوتوث", @"الكاميرا", @"الإعدادات"];
     UIImageSymbolConfiguration *tabConfig = [UIImageSymbolConfiguration configurationWithPointSize:21 weight:UIImageSymbolWeightSemibold];
     CGFloat tw = w / icons.count;
-    for (int i=0; i<icons.count; i++) {
+    for (NSUInteger i = 0; i < icons.count; i++) {
         UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
         b.frame = CGRectMake(i * tw, 0, tw, 58);
         if (@available(iOS 13.0, *)) {
@@ -205,7 +205,7 @@ static BOOL WFMasterProcessIsEligible(void) {
         }
         b.tintColor = [UIColor whiteColor];
         b.adjustsImageWhenHighlighted = NO;
-        b.tag = i;
+        b.tag = (NSInteger)i;
         b.accessibilityLabel = tabLabels[i];
         b.accessibilityHint = @"يفتح هذا القسم";
         [b addTarget:self action:@selector(tabBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -1607,11 +1607,11 @@ static BOOL WFMasterProcessIsEligible(void) {
     NSArray *locs = [WolFoxProStore shared].locations;
     if (locs.count == 0) { [self showToast:@"لا توجد مواقع محفوظة 📋"]; return; }
     [self showPopupWithTitle:@"المواقع المحفوظة" icon:@"list.bullet" content:^{
-        CGFloat ph = MIN(locs.count * 60 + 20, 400);
+        CGFloat ph = MIN((CGFloat)(locs.count * 60 + 20), 400.0);
         UIScrollView *sv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 300, ph)];
         sv.alwaysBounceVertical = YES;
         CGFloat cy = 10;
-        for (int i=0; i<locs.count; i++) {
+        for (NSUInteger i = 0; i < locs.count; i++) {
             WolFoxProLocation *l = locs[i];
             UIView *row = [[UIView alloc] initWithFrame:CGRectMake(10, cy, 280, 50)];
             row.backgroundColor = [WolFoxProTheme surfaceSecondary]; row.layer.cornerRadius = 12;
@@ -1623,7 +1623,7 @@ static BOOL WFMasterProcessIsEligible(void) {
             cl.text = [NSString stringWithFormat:@"%.6f, %.6f", l.coordinate.latitude, l.coordinate.longitude];
             cl.textColor = [WolFoxProTheme textSecondary]; cl.textAlignment = NSTextAlignmentRight; cl.font = [WolFoxProTheme fontOfSize:10 weight:UIFontWeightMedium];
             [row addSubview:cl];
-            UIButton *selB = [UIButton buttonWithType:UIButtonTypeCustom]; selB.frame = row.bounds; selB.tag = i;
+            UIButton *selB = [UIButton buttonWithType:UIButtonTypeCustom]; selB.frame = row.bounds; selB.tag = (NSInteger)i;
             [selB addTarget:self action:@selector(favSelected:) forControlEvents:UIControlEventTouchUpInside];
             [row addSubview:selB];
             UIButton *delB = [UIButton buttonWithType:UIButtonTypeSystem]; delB.frame = CGRectMake(6, 3, 44, 44);
