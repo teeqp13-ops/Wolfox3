@@ -1,4 +1,6 @@
 .wolfox-build/
+.theos/
+.theos-sdks/
 WolFox.dylib
 *.deb
 *.log

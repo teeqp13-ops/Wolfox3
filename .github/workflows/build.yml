@@ -24,7 +24,8 @@ jobs:
     timeout-minutes: 45
     env:
       THEOS: ${{ github.workspace }}/.theos
-      SDKROOT: ${{ github.workspace }}/.theos/sdks/iPhoneOS16.5.sdk
+      THEOS_SDKS: ${{ github.workspace }}/.theos-sdks
+      SDKROOT: ${{ github.workspace }}/.theos-sdks/iPhoneOS16.5.sdk
       WOLFOX_TARGET_BUNDLE_IDS: com.example.wolfox.authorizedtest
 
     steps:
@@ -53,7 +54,7 @@ jobs:
           curl -fsSL \
             https://github.com/L1ghtmann/llvm-project/releases/latest/download/iOSToolchain-x86_64.tar.xz \
             | tar -xJ -C "$THEOS/toolchain"
-          git clone --depth 1 https://github.com/theos/sdks.git "$THEOS/sdks"
+          git clone --depth 1 https://github.com/theos/sdks.git "$THEOS_SDKS"
           test -x "$THEOS/toolchain/linux/iphone/bin/ldid"
           test -f "$SDKROOT/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h"
           test -f "$SDKROOT/System/Library/Frameworks/WebKit.framework/Headers/WebKit.h"
